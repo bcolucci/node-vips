@@ -1,0 +1,47 @@
+{
+  "name": "node-vips",
+  "version": "0.0.1",
+  "description": "A Vision-based Page Segmentation Algorithm Node.js implementation",
+  "main": "vips.js",
+  "scripts": {
+    "test": "node_modules/.bin/ava test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bcolucci/node-vips.git"
+  },
+  "keywords": [
+    "vision",
+    "page",
+    "segmentation",
+    "algorithm",
+    "vips"
+  ],
+  "author": "Brice Colucci <brice.colucci@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/bcolucci/node-vips/issues"
+  },
+  "homepage": "https://github.com/bcolucci/node-vips#readme",
+  "dependencies": {
+    "jsdom": "^9.11.0",
+    "q": "^1.4.1",
+    "ramda": "^0.23.0"
+  },
+  "devDependencies": {
+    "ava": "^0.18.2",
+    "babel-cli": "^6.23.0",
+    "babel-preset-latest": "^6.22.0",
+    "babel-register": "^6.23.0"
+  },
+  "ava": {
+    "files": [
+      "test.js"
+    ],
+    "failFast": true,
+    "babel": "inherit",
+    "require": [
+      "babel-register"
+    ]
+  }
+}
