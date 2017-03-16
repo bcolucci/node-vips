@@ -40,6 +40,18 @@ test(t => parse(`
     t.deepEqual(vips.nodeChildren(root).map(vips.tagName), [ 'article', 'text', 'hr', 'article', 'text', 'em', 'text' ])
 }))
 
-test(t => parse('<span>this is a <em>virtual <i>node</i></em></span>').then(({ root }) => {
-  vips.isVirtualTextNode(root)
+test(t => parse('this is a virtual node (1)').then(({ root }) => {
+  t.true(vips.isVirtualTextNode(root))
+}))
+
+test(t => parse('<b>this is a virtual node (2)</b>').then(({ root }) => {
+  t.true(vips.isVirtualTextNode(root))
+}))
+
+test(t => parse('<b>this is a <em>virtual node</em> (3)</b>').then(({ root }) => {
+  t.true(vips.isVirtualTextNode(root))
+}))
+
+test(t => parse('<b>this is NOT a <span>virtual</span> node</b>').then(({ root }) => {
+  t.false(vips.isVirtualTextNode(root))
 }))
