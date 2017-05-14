@@ -17,7 +17,10 @@ export const emptyTextNodeFilter = R.filter(R.either(
 ))
 
 const rawNodeChildren = R.compose(emptyTextNodeFilter, Array.from, defaultEmptyArray, R.prop('childNodes'))
-const recursiveChildrenToArray = R.ifElse(R.compose(R.isEmpty), R.always([]), R.reduce((acc, n) => acc.concat(n).concat(nodeChildren(n)), []))
+const recursiveChildrenToArray = R.ifElse(
+  R.compose(R.isEmpty), R.always([]),
+  R.reduce((acc, n) => acc.concat(n).concat(nodeChildren(n)), [])
+)
 export const nodeChildren = R.compose(recursiveChildrenToArray, rawNodeChildren)
 
 export const hasOnlyOneChild = R.compose(R.equals(1), R.length, nodeChildren)
@@ -33,7 +36,7 @@ export const isNumericStylePropertyIsZero = (style) => (prop) => {
   return isNotZero(R.compose(R.head, defaultEmptyArray)(onlyDigits(propValue)))
 }
 
-export const isVisible = getComputedStyle => node => {
+export const isVisible = (getComputedStyle) => (node) => {
   const style = getComputedStyle(node)
   const isStyleIsZero = isNumericStylePropertyIsZero(style)
   return R.all(R.equals(true), [
@@ -56,5 +59,13 @@ export const isVirtualTextNode = (node) => {
   if (! children.length) {
     return isRawTextNode(node)
   }
-  return R.all(node => R.or(isRawTextNode(node), isVirtualTextNode(node)))(children)
+  const isRawOrVirtualTextNode = (node) => R.or(isRawTextNode(node), isVirtualTextNode(node))
+  return R.all(isRawOrVirtualTextNode)(children)
+}
+
+export const contains = (tag) => R.compose(R.any(R.compose(R.equals(tag), tagName)), nodeChildren)
+
+export const isBrokenInlineNode = (node) => {
+  const childrenTags = R.compose(R.map(tagName), nodeChildren)(node)
+  return R.any((tag) => ! R.contains(tag, INLINE_NODES))(childrenTags)
 }
